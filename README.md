@@ -14,7 +14,7 @@ $ npm run install
 $ npm run dev
 
 # build for production and deploy to firebase
-$ npm run prepare
+$ npm run prep
 $ firebase deploy
 ```
 
