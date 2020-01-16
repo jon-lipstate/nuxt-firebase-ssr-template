@@ -15,7 +15,7 @@ const nuxt = new Nuxt(config);
 
 async function handleRequest(req, res) {
   res.set('Cache-Control', 'public, max-age=600, s-maxage=1200');
-  console.log('Incoming Request: ', req.path);
+  console.log(`[${req.ip}] requested [${req.path}]`);
   nuxt.render(req, res);
 }
 app.get('*', handleRequest);
