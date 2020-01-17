@@ -9,8 +9,8 @@ export default context => {
         console.log('Auth State changed, User: ', user);
         if (user) {
           const tokenResult = await user.getIdTokenResult();
-          return resolve();
-          store.dispatch('user/storeUserOnClient', { user, tokenResult });
+          return resolve(store.dispatch('user/storeUserOnClient', { user, tokenResult }));
+          
         }
         return resolve(store.commit('user/CLEAR_AUTH'));
       } catch (e) {

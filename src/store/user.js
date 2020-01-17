@@ -1,5 +1,6 @@
 import { db, auth, functions } from '~/services/fireInit';
 import cookie from 'js-cookie';
+import Vue from 'vue';
 // ------------------- STATE ------------------- \\
 export const state = () => ({
   uid: null,
@@ -23,15 +24,15 @@ export const mutations = {
 // ------------------- ACTIONS ------------------- \\
 export const actions = {
   // LOGIN
-  async login(context, authData) {
+  async login({ dispatch }, authData) {
     await auth.setPersistence('local');
     return auth.signInWithEmailAndPassword(authData.email, authData.password);
-    //dispatch-storeUserOnClient in /plugins/fireAuth.js
+    //dispatch-storeUserOnClient in fireAuth
   },
   // LOGOUT
   async logout({ commit }) {
     await auth.signOut();
-    //commit-clear_auth in /plugins/fireAuth.js
+    //commit-clear_auth in fireAuth
   },
   // REGISTER
   async register({ dispatch }, authData) {
@@ -46,7 +47,7 @@ export const actions = {
     dispatch('storeUserOnClient', { user: auth.currentUser, tokenResult });
   },
   //STORE USER
-  async storeUserOnClient({ commit }, data) {
+  async storeUserOnClient({ commit, dispatch }, data) {
     const claims = data.tokenResult.claims;
     const payload = {
       user: {
@@ -56,6 +57,16 @@ export const actions = {
       }
     };
     commit('SET_AUTH', payload);
+    //dispatch('setColorTheme', payload.user);
+  },
+  //SET COLORS
+  setColorTheme({ commit, app }, data) {
+    //https://stackoverflow.com/questions/50243769/vuetify-how-to-set-background-color#50283479
+    if (data.role == 'admin') {
+      Vue.prototype.$nuxt.$vuetify.theme.dark = false;
+    } else {
+      Vue.prototype.$nuxt.$vuetify.theme.dark = true;
+    }
   },
   // SET USER ROLE
   async setRole({ commit }, data) {
@@ -70,6 +81,7 @@ export const actions = {
       .doc(uid)
       .get();
     const dbUser = userSnap.data();
+    //console.log('ACTION; getUserFromDB; , dbuser', dbUser);
     return dbUser;
   },
   // SAVE USER

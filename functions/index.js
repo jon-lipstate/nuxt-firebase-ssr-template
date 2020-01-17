@@ -6,9 +6,6 @@
 const ssrModule = require('./ssr');
 const setRoleModule = require('./setRole');
 const functions = require('firebase-functions');
-const admin = require('firebase-admin');
-
 exports.ssr = functions.https.onRequest(ssrModule.handler);
 exports.setRole = functions.https.onCall(setRoleModule.handler);
-
-admin.initializeApp();
+require('firebase-admin').initializeApp();

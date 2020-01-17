@@ -1,4 +1,5 @@
 const admin = require('firebase-admin');
+exports.handler = setCustomClaim;
 
 async function setCustomClaim(data, context) {
   if (context.auth.token.admin !== true) {
@@ -6,20 +7,13 @@ async function setCustomClaim(data, context) {
   }
   const customClaim = {};
   customClaim[data.role] = true;
-
-  return admin
-    .auth()
-    .getUserByEmail(data.email)
-    .then(user => {
-      return admin.auth().setCustomUserClaims(user.uid, customClaim);
-    })
-    .then(() => {
-      return {
-        message: `Success ${data.email} has the role ${data.role} added`
-      };
-    })
-    .catch(e => {
-      return e;
-    });
+  try {
+    const user = await admin.auth().getUserByEmail(data.email);
+    await admin.auth().setCustomUserClaims(user.uid, customClaim);
+    return {
+      message: `Success ${data.email} has the role ${data.role} added`
+    };
+  } catch (error) {
+    return error;
+  }
 }
-exports.handler = setCustomClaim;
