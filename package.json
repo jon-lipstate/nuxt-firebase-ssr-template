@@ -8,11 +8,11 @@
     "dev": "nuxt",
     "build": "nuxt build",
     "start": "nuxt start",
-    "copy:static": "copyfiles -u 2 src/static/**/*.* public/",
-    "copy:nuxt": "copyfiles -a .nuxt/**/*.* functions/",
-    "copy:srv": "copyfiles -u 3 -a .nuxt/dist/server/**/*.* public/_nuxt/",
-    "copy:cln": "copyfiles -u 3 -a .nuxt/dist/client/**/*.* public/_nuxt/",
-    "clean": "rimraf public/*  && rimraf functions/.nuxt/* && rimraf .nuxt/*",
+    "copy:static": "copyfiles -u 2 src/static/\"**/*.*\" public/",
+    "copy:nuxt": "copyfiles -a .nuxt/\"**/*.*\" functions/",
+    "copy:srv": "copyfiles -u 3 -a .nuxt/dist/server/\"**/*.*\" public/_nuxt/",
+    "copy:cln": "copyfiles -u 3 -a .nuxt/dist/client/\"**/*.*\" public/_nuxt/",
+    "clean": "rimraf public/\"*\"  && rimraf functions/.nuxt/\"*\" && rimraf .nuxt/\"*\"",
     "prep": "npm-run-all clean build copy:static copy:srv copy:cln copy:nuxt"
   },
   "dependencies": {
